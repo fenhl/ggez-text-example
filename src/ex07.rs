@@ -23,6 +23,7 @@ use {
             Rect,
             Text,
             TextFragment,
+            Transform,
         },
         timer,
     },
@@ -66,30 +67,39 @@ impl TextBox {
         let Rect { w, h, .. } = graphics::screen_coordinates(ctx);
         self.text.set_font(handler.dejavu_sans, PxScale::from(self.size));
         self.text.set_bounds([w - self.size, h - self.size], self.halign);
-        let dim = self.text.dimensions(ctx);
-        self.text.draw(ctx, DrawParam::default().dest([
-                match self.halign {
-                    HorizontalAlign::Left => self.size / 2.0,
-                    HorizontalAlign::Center => w / 2.0,
-                    HorizontalAlign::Right => w - self.size / 2.0,
-                },
-                match self.valign {
-                    VerticalAlign::Top => self.size / 2.0,
-                    VerticalAlign::Middle => h / 2.0,
-                    VerticalAlign::Bottom => h - self.size / 2.0,
-                },
-            ]).offset([
-                match self.halign {
-                    HorizontalAlign::Left => 0.0,
-                    HorizontalAlign::Center => 0.5 * dim.x,
-                    HorizontalAlign::Right => dim.x,
-                },
-                match self.valign {
-                    VerticalAlign::Top => 0.0,
-                    VerticalAlign::Middle => 0.5 * dim.y,
-                    VerticalAlign::Bottom => dim.y,
-                },
-            ]))
+        let param = DrawParam::default().dest([
+            match self.halign {
+                HorizontalAlign::Left => self.size / 2.0,
+                HorizontalAlign::Center => w / 2.0,
+                HorizontalAlign::Right => w - self.size / 2.0,
+            },
+            match self.valign {
+                VerticalAlign::Top => self.size / 2.0,
+                VerticalAlign::Middle => h / 2.0,
+                VerticalAlign::Bottom => h - self.size / 2.0,
+            },
+        ]).offset([
+            match self.halign {
+                HorizontalAlign::Left => 0.0,
+                HorizontalAlign::Center => 0.5,
+                HorizontalAlign::Right => 1.0,
+            },
+            match self.valign {
+                VerticalAlign::Top => 0.0,
+                VerticalAlign::Middle => 0.5,
+                VerticalAlign::Bottom => 1.0,
+            },
+        ]);
+        let mut new_param = param;
+        if let Transform::Values { offset, .. } = param.trans {
+            let dim = self.text.dimensions(ctx);
+            let new_offset = mint::Vector2 {
+                x: offset.x * dim.w + dim.x,
+                y: offset.y * dim.h + dim.y,
+            };
+            new_param = param.offset(new_offset);
+        }
+        self.text.draw(ctx, new_param)
     }
 }
 
