@@ -1,0 +1,25 @@
+[package]
+name = "ggez-text-example"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "ex06"
+path = "src/ex06.rs"
+
+[[bin]]
+name = "ex07"
+path = "src/ex07.rs"
+
+[dependencies]
+mint = "=0.5.8"
+
+[dependencies.ggez06]
+package = "ggez"
+version = "=0.6.1"
+default-features = false
+
+[dependencies.ggez07]
+package = "ggez"
+version = "=0.7.0"
+default-features = false
