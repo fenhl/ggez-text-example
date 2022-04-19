@@ -11,6 +11,10 @@ path = "src/ex06.rs"
 name = "ex07"
 path = "src/ex07.rs"
 
+[[bin]]
+name = "exwgpu"
+path = "src/exwgpu.rs"
+
 [dependencies]
 mint = "=0.5.8"
 
@@ -22,4 +26,10 @@ default-features = false
 [dependencies.ggez07]
 package = "ggez"
 version = "=0.7.0"
+default-features = false
+
+[dependencies.ggezwgpu]
+package = "ggez"
+git = "https://github.com/aleokdev/ggez"
+branch = "wgpu"
 default-features = false
