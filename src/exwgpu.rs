@@ -56,7 +56,7 @@ impl TextBox {
         self
     }
 
-    fn draw(mut self, ctx: &mut Context, canvas: &mut Canvas) -> GameResult<()> {
+    fn draw(mut self, canvas: &mut Canvas) -> GameResult<()> {
         let Rect { w, h, .. } = canvas.screen_coordinates().expect("set in Handler::draw");
         self.text.set_font("DejaVu Sans");
         self.text.set_scale(PxScale::from(self.size));
@@ -88,15 +88,15 @@ impl EventHandler<GameError> for Handler {
         let mut canvas = Canvas::from_frame(&ctx.gfx, CanvasLoadOp::Clear(Color::BLACK));
         let (w, h) = ctx.gfx.drawable_size();
         canvas.set_screen_coordinates(Rect { x: 0.0, y: 0.0, w, h });
-        TextBox::new("upper left").halign(TextAlign::Begin).valign(TextAlign::Begin).draw(ctx, &mut canvas)?;
-        TextBox::new("upper center").halign(TextAlign::Middle).valign(TextAlign::Begin).draw(ctx, &mut canvas)?;
-        TextBox::new("upper right").halign(TextAlign::End).valign(TextAlign::Begin).draw(ctx, &mut canvas)?;
-        TextBox::new("middle left").halign(TextAlign::Begin).valign(TextAlign::Middle).draw(ctx, &mut canvas)?;
-        TextBox::new("middle center").halign(TextAlign::Middle).valign(TextAlign::Middle).draw(ctx, &mut canvas)?;
-        TextBox::new("middle right").halign(TextAlign::End).valign(TextAlign::Middle).draw(ctx, &mut canvas)?;
-        TextBox::new("bottom left").halign(TextAlign::Begin).valign(TextAlign::End).draw(ctx, &mut canvas)?;
-        TextBox::new("bottom center").halign(TextAlign::Middle).valign(TextAlign::End).draw(ctx, &mut canvas)?;
-        TextBox::new("bottom right").halign(TextAlign::End).valign(TextAlign::End).draw(ctx, &mut canvas)?;
+        TextBox::new("upper left").halign(TextAlign::Begin).valign(TextAlign::Begin).draw(&mut canvas)?;
+        TextBox::new("upper center").halign(TextAlign::Middle).valign(TextAlign::Begin).draw(&mut canvas)?;
+        TextBox::new("upper right").halign(TextAlign::End).valign(TextAlign::Begin).draw(&mut canvas)?;
+        TextBox::new("middle left").halign(TextAlign::Begin).valign(TextAlign::Middle).draw(&mut canvas)?;
+        TextBox::new("middle center").halign(TextAlign::Middle).valign(TextAlign::Middle).draw(&mut canvas)?;
+        TextBox::new("middle right").halign(TextAlign::End).valign(TextAlign::Middle).draw(&mut canvas)?;
+        TextBox::new("bottom left").halign(TextAlign::Begin).valign(TextAlign::End).draw(&mut canvas)?;
+        TextBox::new("bottom center").halign(TextAlign::Middle).valign(TextAlign::End).draw(&mut canvas)?;
+        TextBox::new("bottom right").halign(TextAlign::End).valign(TextAlign::End).draw(&mut canvas)?;
         canvas.finish(&mut ctx.gfx)?;
         timer::yield_now();
         Ok(())
